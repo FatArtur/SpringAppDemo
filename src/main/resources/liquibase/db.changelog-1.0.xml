@@ -1,0 +1,299 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1.0.0" author="artur.fatikhov">
+        <createTable tableName="accounts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="accountStatus" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.1" author="artur.fatikhov">
+        <createTable tableName="files">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="address" type="VARCHAR(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="fileStatus" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="artur.fatikhov">
+        <createTable tableName="events">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="data" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="file_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="file_id" references="files(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.3" author="artur.fatikhov">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="true" foreignKeyName="fk_account_users" references="accounts(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.4" author="artur.fatikhov">
+        <createTable tableName="users_files">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_file" references="users(id)"/>
+            </column>
+
+            <column name="file_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_file_user" references="files(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.5" author="artur.fatikhov">
+        <createTable tableName="users_events">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_event" references="users(id)"/>
+            </column>
+
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_event_user" references="events(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.6" author="artur.fatikhov">
+        <insert tableName="accounts">
+            <column name="name" value="Account_1"/>
+            <column name="accountStatus" value="ACTIVE"/>
+        </insert>
+        <insert tableName="accounts">
+            <column name="name" value="Account_2"/>
+            <column name="accountStatus" value="ACTIVE"/>
+        </insert>
+        <insert tableName="accounts">
+            <column name="name" value="Account_3"/>
+            <column name="accountStatus" value="BANNED"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.7" author="artur.fatikhov">
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.8" author="artur.fatikhov">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_role" references="users(id)"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_role_user" references="roles(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.9" author="artur.fatikhov">
+        <insert tableName="roles">
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_MODERATOR"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.10" author="artur.fatikhov">
+        <insert tableName="files">
+            <column name="name" value="file_1"/>
+            <column name="address" value="c:\files\file_1"/>
+            <column name="fileStatus" value="ACTIVE"/>
+        </insert>
+        <insert tableName="files">
+            <column name="name" value="file_2"/>
+            <column name="address" value="c:\files\file_2"/>
+            <column name="fileStatus" value="ACTIVE"/>
+        </insert>
+        <insert tableName="files">
+            <column name="name" value="file_3"/>
+            <column name="address" value="c:\files\file_3"/>
+            <column name="fileStatus" value="ACTIVE"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.11" author="artur.fatikhov">
+        <insert tableName="events">
+            <column name="data" value="2020-12-01"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="events">
+            <column name="data" value="2020-03-21"/>
+            <column name="file_id" value="2"/>
+        </insert>
+        <insert tableName="events">
+            <column name="data" value="2020-01-12"/>
+            <column name="file_id" value="3"/>
+        </insert>
+        <insert tableName="events">
+            <column name="data" value="2017-12-01"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="events">
+            <column name="data" value="2018-01-22"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="events">
+            <column name="data" value="2019-02-11"/>
+            <column name="file_id" value="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.12" author="artur.fatikhov">
+        <insert tableName="users">
+            <column name="name" value="Ivan"/>
+            <column name="email" value="email@gmail.com"/>
+            <column name="password" value="password"/>
+            <column name="account_id" value="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="Boris"/>
+            <column name="email" value="boris@gmail.com"/>
+            <column name="password" value="password"/>
+            <column name="account_id" value="2"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="Dima"/>
+            <column name="email" value="dima@gmail.com"/>
+            <column name="password" value="password"/>
+            <column name="account_id" value="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.13" author="artur.fatikhov">
+        <insert tableName="users_files">
+            <column name="user_id" value="1"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="users_files">
+            <column name="user_id" value="1"/>
+            <column name="file_id" value="3"/>
+        </insert>
+        <insert tableName="users_files">
+            <column name="user_id" value="2"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="users_files">
+            <column name="user_id" value="2"/>
+            <column name="file_id" value="2"/>
+        </insert>
+        <insert tableName="users_files">
+            <column name="user_id" value="3"/>
+            <column name="file_id" value="1"/>
+        </insert>
+        <insert tableName="users_files">
+            <column name="user_id" value="3"/>
+            <column name="file_id" value="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.14" author="artur.fatikhov">
+        <insert tableName="users_events">
+            <column name="user_id" value="1"/>
+            <column name="event_id" value="2"/>
+        </insert>
+        <insert tableName="users_events">
+            <column name="user_id" value="1"/>
+            <column name="event_id" value="3"/>
+        </insert>
+        <insert tableName="users_events">
+            <column name="user_id" value="1"/>
+            <column name="event_id" value="4"/>
+        </insert>
+        <insert tableName="users_events">
+            <column name="user_id" value="3"/>
+            <column name="event_id" value="5"/>
+        </insert>
+        <insert tableName="users_events">
+            <column name="user_id" value="3"/>
+            <column name="event_id" value="6"/>
+        </insert>
+        <insert tableName="users_events">
+            <column name="user_id" value="2"/>
+            <column name="event_id" value="7"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.15" author="artur.fatikhov">
+        <insert tableName="user_roles">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
