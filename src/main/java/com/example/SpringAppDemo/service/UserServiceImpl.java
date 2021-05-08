@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,9 +44,9 @@ public class UserServiceImpl implements BasicService<User, Long>{
 
     @Override
     public User findByID(Long id) {
-        User result = userRepository.getOne(id);
+        User result = userRepository.findById(id).orElse(null);
         if (result == null){
-            log.info("IN findByID - no user found by id - {}", id);
+            log.warn("IN findByID - no user found by id - {}", id);
             return null;}
         log.info("IN findByID - user:{} found by id - {}", result, id);
         return result;

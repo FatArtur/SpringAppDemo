@@ -1,5 +1,6 @@
 package com.example.SpringAppDemo.security.jwt;
 
+import com.example.SpringAppDemo.model.AccountStatus;
 import com.example.SpringAppDemo.model.Role;
 import com.example.SpringAppDemo.model.Status;
 import com.example.SpringAppDemo.model.User;
@@ -20,7 +21,7 @@ public final class JwtUserFactory {
                 user.getEmail(),
                 user.getPassword(),
                 user.getAccount(),
-                user.getAccount().getAccountStatus().equals(Status.ACTIVE),
+                user.getAccount().getAccountStatus().equals(AccountStatus.ACTIVE),
                 user.getFiles(),
                 user.getEvents(),
                 mapToGrantedAuthority(user.getRoles()));

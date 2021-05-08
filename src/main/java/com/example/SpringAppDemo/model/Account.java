@@ -1,6 +1,10 @@
 package com.example.SpringAppDemo.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.dialect.MySQLDialect;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +17,8 @@ public class Account {
     @Column(name = "name")
     private String name;
     @Enumerated(EnumType.STRING)
-    private Status accountStatus;
+    @Column(name = "accountStatus")
+    private AccountStatus accountStatus;
 
     @Override
     public String toString() {

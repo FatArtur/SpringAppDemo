@@ -1,6 +1,7 @@
 package com.example.SpringAppDemo.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
