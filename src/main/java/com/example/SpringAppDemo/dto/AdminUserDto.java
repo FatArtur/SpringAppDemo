@@ -4,10 +4,6 @@ import com.example.SpringAppDemo.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Data
@@ -21,18 +17,6 @@ public class AdminUserDto {
     private List<File> files;
     private List<Event> events;
     private List<Role> roles;
-
-    public User toUser(){
-        User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setPassword(password);
-        user.setAccount(account);
-        user.setFiles(files);
-        user.setEvents(events);
-        user.setRoles(roles);
-        return user;
-    }
 
     public static AdminUserDto fromUser(User user){
         AdminUserDto adminUserDto = new AdminUserDto();
