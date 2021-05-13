@@ -6,6 +6,7 @@ import com.example.SpringAppDemo.model.User;
 import com.example.SpringAppDemo.security.jwt.JwtTokenProvider;
 import com.example.SpringAppDemo.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,7 +30,9 @@ public class AuthenticationRestControllerV1 {
     private BasicService basicService;
 
     @Autowired
-    public AuthenticationRestControllerV1(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, BasicService basicService) {
+    public AuthenticationRestControllerV1(AuthenticationManager authenticationManager,
+                                          JwtTokenProvider jwtTokenProvider,
+                                          @Qualifier("userService") BasicService basicService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.basicService = basicService;
@@ -42,7 +45,7 @@ public class AuthenticationRestControllerV1 {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = (User) basicService.findByName(username);
 
-            if (user == null){
+            if (user == null) {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
             }
 
@@ -51,7 +54,7 @@ public class AuthenticationRestControllerV1 {
             response.put("username", username);
             response.put("token", token);
             return ResponseEntity.ok(response);
-        } catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
     }

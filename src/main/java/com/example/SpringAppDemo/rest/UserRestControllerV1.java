@@ -9,6 +9,7 @@ import com.example.SpringAppDemo.security.jwt.JwtTokenProvider;
 import com.example.SpringAppDemo.service.BasicService;
 import com.example.SpringAppDemo.service.s3.S3Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class UserRestControllerV1 {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserRestControllerV1(BasicService basicService, S3Client s3Client, JwtTokenProvider jwtTokenProvider) {
+    public UserRestControllerV1(@Qualifier("userService") BasicService basicService, S3Client s3Client, JwtTokenProvider jwtTokenProvider) {
         this.basicService = basicService;
         this.s3Client = s3Client;
         this.jwtTokenProvider = jwtTokenProvider;

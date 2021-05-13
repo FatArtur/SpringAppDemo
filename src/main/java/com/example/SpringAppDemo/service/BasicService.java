@@ -1,6 +1,9 @@
 package com.example.SpringAppDemo.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 
 public interface BasicService<T, Long> {
     T save(T val);

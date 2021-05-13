@@ -7,6 +7,7 @@ import com.example.SpringAppDemo.service.BasicService;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +21,7 @@ public class JwtUserDetailService implements UserDetailsService {
     @Autowired
     private final BasicService basicService;
 
-    public JwtUserDetailService(BasicService basicService) {
+    public JwtUserDetailService(@Qualifier("userService")BasicService basicService) {
         this.basicService = basicService;
     }
 

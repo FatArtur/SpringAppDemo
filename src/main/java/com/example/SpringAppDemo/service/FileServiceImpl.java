@@ -6,11 +6,13 @@ import com.example.SpringAppDemo.repository.FileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Qualifier
+@Service
+@Qualifier("fileService")
 @Slf4j
 public class FileServiceImpl implements BasicService<File, Long>{
 

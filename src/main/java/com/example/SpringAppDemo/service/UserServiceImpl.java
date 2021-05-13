@@ -4,13 +4,16 @@ import com.example.SpringAppDemo.model.User;
 import com.example.SpringAppDemo.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Qualifier("userService")
+@Primary
 @Slf4j
 public class UserServiceImpl implements BasicService<User, Long>{
 
@@ -26,7 +29,9 @@ public class UserServiceImpl implements BasicService<User, Long>{
 
     @Override
     public User save(User val) {
-        return null;
+        User result = userRepository.save(val);
+        log.info("IN save user by name - {}", val.getName());
+        return result;
     }
 
     @Override
